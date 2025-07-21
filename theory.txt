@@ -1,0 +1,49 @@
+.
+├── app/                       # All route-based files (handled by Expo Router)
+│   ├── index.tsx             # Home screen
+│   ├── sign-in.tsx           # Sign in screen
+│   ├── profile/
+│   │   └── index.tsx         # Nested route: /profile
+│   ├── _layout.tsx           # Global layout (like navbar, provider)
+│   └── _error.tsx            # Optional: custom error page
+│
+├── assets/                   # Fonts, images, icons, etc.
+│   ├── fonts/
+│   └── images/
+│
+├── src/
+│   ├── components/           # Reusable UI components
+│   │   ├── ui/               # UI atoms like Button, Input
+│   │   ├── layout/           # Layout parts like Navbar, Footer
+│   │   └── shared/           # Shared components across pages
+│   │
+│   ├── constants/            # Colors, routes, sizes, etc.
+│   │   └── index.ts
+│   │
+│   ├── hooks/                # Custom React/Redux hooks
+│   │   └── useAuth.ts
+│   │
+│   ├── lib/                  # Utility functions, helpers
+│   │   └── api.ts            # Example: Axios instance or fetch
+│   │
+│   ├── store/                # Redux store and slices
+│   │   ├── index.ts          # Store setup
+│   │   └── slices/
+│   │       ├── userSlice.ts
+│   │       └── authSlice.ts
+│   │
+│   ├── services/             # API interaction (organized by feature)
+│   │   ├── auth.service.ts
+│   │   └── user.service.ts
+│   │
+│   ├── types/                # Global TypeScript types/interfaces
+│   │   └── index.d.ts
+│   │
+│   └── config/               # Configs like env, theming
+│       └── env.ts
+│
+├── global.css                # Tailwind CSS global setup
+├── app.config.ts             # Expo app configuration
+├── package.json
+├── tsconfig.json
+└── README.md
