@@ -1,22 +1,30 @@
-import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
-export default function SignIn() {
-      const router = useRouter()
+
+export default function Register() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    if (!email || !password) {
-      Alert.alert("Error", "Please enter both email and password.");
+  const handleRegister = () => {
+    if (!username || !email || !password) {
+      Alert.alert("Error", "Please fill in all fields.");
       return;
     }
-    Alert.alert("Login", `Email: ${email}\nPassword: ${password}`);
+    Alert.alert("Registered", `Username: ${username}\nEmail: ${email}`);
   };
 
   return (
     <View className="flex-1 justify-center px-6 bg-white">
-      <Text className="text-2xl font-bold mb-6 text-center">Sign In</Text>
+      <Text className="text-2xl font-bold mb-6 text-center">Register</Text>
+
+      <TextInput
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+        autoCapitalize="none"
+        className="border border-gray-300 p-3 rounded mb-4"
+      />
 
       <TextInput
         placeholder="Email"
@@ -36,12 +44,11 @@ export default function SignIn() {
       />
 
       <TouchableOpacity
-        onPress={handleLogin}
+        onPress={handleRegister}
         className="bg-blue-500 py-3 rounded"
       >
-        <Text className="text-white text-center font-medium">Log In</Text>
+        <Text className="text-white text-center font-medium">Register</Text>
       </TouchableOpacity>
-      <Text className="text-center mt-3">If you do not have account,{""} <Text className="font-bold text-blue-500" onPress={()=>{router.push("/auth/register")}}>Register</Text></Text>
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function Navbar() {
   const router = useRouter();
@@ -7,7 +7,12 @@ export default function Navbar() {
   return (
     <View className="flex-row items-center justify-between px-4 py-4 bg-white border-b border-gray-200">
       {/* App Title on the Left */}
-      <Text className="text-base font-semibold text-gray-800" onPress={()=>{router.push("/")}}>Mero App</Text>
+     <TouchableOpacity onPress={()=>{router.push("/")}}>
+            <Image
+    source={require('../../../assets/images/favicon.png')}
+    style={{ width: 40, height: 40 }}
+  />
+     </TouchableOpacity>
 
       {/* Navigation Buttons on the Right */}
       <View className="flex-row space-x-2 gap-1"> 
