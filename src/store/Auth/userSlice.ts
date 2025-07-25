@@ -30,11 +30,13 @@ function Login(data: ILoginData){
             try {
                  const response =  await API.post("users/login",data);
                  if(response.data.status === 200){
+                    
                     dispatch(setUser(response.data.data));
                     dispatch(setUserStatus(Status.success));
+
                  }
                  else{
-
+                    
                     dispatch(setUserStatus(Status.error))
                  }
             } catch (error) {

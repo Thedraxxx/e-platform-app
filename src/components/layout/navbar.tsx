@@ -3,9 +3,8 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function Navbar() {
   const router = useRouter();
-
   return (
-    <View className="flex-row items-center justify-between px-4 py-4 bg-white border-b border-gray-200">
+    <View className="flex-row items-center justify-between px-4 pt-10 pb-4 bg-white border-b border-gray-200">
       {/* App Title on the Left */}
      <TouchableOpacity onPress={()=>{router.push("/")}}>
             <Image
@@ -25,7 +24,7 @@ export default function Navbar() {
 
         <TouchableOpacity
           className="px-3 py-1 rounded bg-gray-200"
-          onPress={() => router.push("/auth/institute-signup")}
+          onPress={() => router.push("/(institute)/institute-signup")}
         >
           <Text className="text-gray-700 text-sm">Become Institute</Text>
         </TouchableOpacity>
