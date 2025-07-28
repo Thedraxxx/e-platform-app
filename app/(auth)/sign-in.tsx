@@ -1,17 +1,36 @@
+import { Login } from "@/src/store/Auth/userSlice";
+import { ILoginData } from "@/src/store/Auth/userSlice.types";
+import { AppDispatch, RootState } from "@/src/store/store";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 export default function SignIn() {
-      const router = useRouter()
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+    const dispatch = useDispatch<AppDispatch>();
+    const user = useSelector((state: RootState)=>state.auth.user);
+     useEffect(()=>{
+        console.log("state ma basyo :",user)    
+     },[user])
+       const router = useRouter()
+     const [data,setData] = useState<ILoginData>({
+      email: '',
+      password: "",
+     })
+     const handleChange = (feild: keyof ILoginData,value: string)=>{
+           setData(prev=>({
+            ...prev,
+            [feild]: value
+           }))
+     }
 
   const handleLogin = () => {
-    if (!email || !password) {
+    if (!data.email || !data.password) {
       Alert.alert("Error", "Please enter both email and password.");
       return;
     }
-    Alert.alert("Login", `Email: ${email}\nPassword: ${password}`);
+    //  console.log("data of the user:",data)
+    dispatch(Login(data));
   };
 
   return (
@@ -20,8 +39,8 @@ export default function SignIn() {
 
       <TextInput
         placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
+        value={data.email}
+        onChangeText={(text)=>{handleChange("email",text)}}
         keyboardType="email-address"
         autoCapitalize="none"
         className="border border-gray-300 p-3 rounded mb-4"
@@ -29,8 +48,8 @@ export default function SignIn() {
 
       <TextInput
         placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
+        value={data.password}
+        onChangeText={(text)=>{handleChange("password",text)}}
         secureTextEntry
         className="border border-gray-300 p-3 rounded mb-6"
       />
@@ -41,7 +60,7 @@ export default function SignIn() {
       >
         <Text className="text-white text-center font-medium">Log In</Text>
       </TouchableOpacity>
-      <Text className="text-center mt-3">If you do not have account,{""} <Text className="font-bold text-blue-500" onPress={()=>{router.push("/auth/register")}}>Register</Text></Text>
+      <Text className="text-center mt-3">If you do not have account,{""} <Text className="font-bold text-blue-500" onPress={()=>{router.push("/(auth)/register")}}>Register</Text></Text>
     </View>
   );
 }

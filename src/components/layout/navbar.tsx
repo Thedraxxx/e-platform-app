@@ -17,7 +17,7 @@ export default function Navbar() {
       <View className="flex-row space-x-2 gap-1"> 
         <TouchableOpacity
           className="px-3 py-1 rounded bg-gray-200"
-          onPress={() => router.push("/auth/sign-in")}
+          onPress={() => router.push("/(auth)/sign-in")}
         >
           <Text className="text-gray-700 text-sm">Sign In</Text>
         </TouchableOpacity>

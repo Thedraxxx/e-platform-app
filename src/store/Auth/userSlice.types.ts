@@ -1,12 +1,6 @@
 import { Status } from "../golbalTypes/types"
 
-export interface IInitialState{
-    user: {
-        email: string,
-        token: string
-    },
-    status: Status
-}
+
 export interface ILoginData{
     email: string,
      password: string
@@ -14,5 +8,10 @@ export interface ILoginData{
 
 export interface IUserData{
     email: string,
-    token: string
+     username: string,
+        role: string
+}
+export interface IInitialState{
+    user: IUserData,
+    status: Status
 }
