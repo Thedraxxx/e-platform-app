@@ -3,12 +3,13 @@ import { ILoginData } from "@/src/store/Auth/userSlice.types";
 import { AppDispatch, RootState } from "@/src/store/store";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 export default function SignIn() {
 
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState)=>state.auth.user);
+    const loading = useSelector((state: RootState)=>state.ui.loading);
      useEffect(()=>{
         console.log("state ma basyo :",user)    
      },[user])
@@ -57,8 +58,14 @@ export default function SignIn() {
       <TouchableOpacity
         onPress={handleLogin}
         className="bg-blue-500 py-3 rounded"
-      >
-        <Text className="text-white text-center font-medium">Log In</Text>
+      >{
+        loading ? (
+           <ActivityIndicator color="#fff"/>
+        ): (
+              <Text className="text-white text-center font-medium">Log In</Text>
+        )
+      }
+       
       </TouchableOpacity>
       <Text className="text-center mt-3">If you do not have account,{""} <Text className="font-bold text-blue-500" onPress={()=>{router.push("/(auth)/register")}}>Register</Text></Text>
     </View>

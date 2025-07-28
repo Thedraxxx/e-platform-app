@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Alert } from "react-native";
 import { Status } from "../golbalTypes/types";
 import { AppDispatch } from "../store";
+import { setLoading } from "../ui/uiSlice";
 import { IInitialState, ILoginData, IUserData } from "./userSlice.types";
 const initialState: IInitialState ={
     user: {
@@ -34,7 +35,7 @@ export function Login(data: ILoginData) {
   return async function userLoginThunk(dispatch: AppDispatch) {
     try {
       console.log("Triggering login with data:", data);
-
+      dispatch(setLoading(true))
       const response = await API.post("users/login", data);
       const { statusCode, data: userData, message, success } = response.data;
 
@@ -53,6 +54,9 @@ export function Login(data: ILoginData) {
 
       Alert.alert("Login Error", error?.response?.data?.message || error.message || "Unexpected error occurred");
       dispatch(setUserStatus(Status.error));
+    }
+    finally{
+      dispatch(setLoading(false))
     }
   };
 }
