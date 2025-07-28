@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 export default function Index() {
   return (
     <View>
-    <Navbar/>
+     <Navbar/>
       <Text className="text-red-800">THis is a home page.</Text>
      </View>
   );

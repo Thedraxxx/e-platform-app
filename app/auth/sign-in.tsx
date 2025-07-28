@@ -65,7 +65,6 @@ export default function SignIn() {
               <Text className="text-white text-center font-medium">Log In</Text>
         )
       }
-       
       </TouchableOpacity>
       <Text className="text-center mt-3">If you do not have account,{""} <Text className="font-bold text-blue-500" onPress={()=>{router.push("/(auth)/register")}}>Register</Text></Text>
     </View>
