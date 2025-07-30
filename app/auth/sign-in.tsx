@@ -6,14 +6,18 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 export default function SignIn() {
-
+    const router = useRouter()
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState)=>state.auth.user);
+    const role = useSelector((state: RootState)=> state.auth.user.role)
     const loading = useSelector((state: RootState)=>state.ui.loading);
      useEffect(()=>{
-        console.log("state ma basyo :",user)    
+        console.log("state ma basyo :",user) 
+        if(role && role === "institute"){
+                   router.replace("/role/(institute)");
+        }
      },[user])
-       const router = useRouter()
+       
      const [data,setData] = useState<ILoginData>({
       email: '',
       password: "",
@@ -66,7 +70,7 @@ export default function SignIn() {
         )
       }
       </TouchableOpacity>
-      <Text className="text-center mt-3">If you do not have account,{""} <Text className="font-bold text-blue-500" onPress={()=>{router.push("/(auth)/register")}}>Register</Text></Text>
+      <Text className="text-center mt-3">If you do not have account,{""} <Text className="font-bold text-blue-500" onPress={()=>{router.push("/auth/register")}}>Register</Text></Text>
     </View>
   );
 }

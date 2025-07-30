@@ -13,5 +13,6 @@ export interface IUserData{
 }
 export interface IInitialState{
     user: IUserData,
-    status: Status
+    status: Status,
+    isAuthenticated: boolean
 }

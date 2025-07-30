@@ -1,48 +1,57 @@
 // import API from "@/src/http";
 import API from "@/src/http";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Alert } from "react-native";
 import { Status } from "../golbalTypes/types";
 import { AppDispatch } from "../store";
 import { setLoading } from "../ui/uiSlice";
 import { IInitialState, ILoginData, IUserData } from "./userSlice.types";
-const initialState: IInitialState ={
-    user: {
-        email: '',
-        username: '',
-        role: ""
-        
+const initialState: IInitialState = {
+  user: {
+    email: "",
+    username: "",
+    role: "",
+  },
+  status: Status.loading,
+  isAuthenticated: false,
+};
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState: initialState,
+  reducers: {
+    setUser(state: IInitialState, action: PayloadAction<IUserData>) {
+      state.user = action.payload;
+      state.isAuthenticated = true;
     },
-    status: Status.loading
-}
-
-const authSlice =createSlice({
-    name: 'auth',
-    initialState: initialState,
-    reducers: {
-          setUser(state: IInitialState,action:PayloadAction<IUserData>){
-               state.user = action.payload
-          },
-          setUserStatus(state: IInitialState,action: PayloadAction<Status>){
-                  state.status = action.payload
-          }
-    }
+    clearUser(state) {
+      state.user = { email: "", username: "", role: "" };
+      state.isAuthenticated = false;
+      state.status = Status.loading;
+    },
+    setUserStatus(state: IInitialState, action: PayloadAction<Status>) {
+      state.status = action.payload;
+    },
+  },
 });
-
-// login thunk
 // login thunk
 export function Login(data: ILoginData) {
   return async function userLoginThunk(dispatch: AppDispatch) {
     try {
       console.log("Triggering login with data:", data);
-      dispatch(setLoading(true))
+      dispatch(setLoading(true));
       const response = await API.post("users/login", data);
       const { statusCode, data: userData, message, success } = response.data;
 
-      console.log("API Response:", response.data);
+      // console.log("API Response:", response.data);
 
       if (statusCode === 200 && success) {
-        Alert.alert("User logged in succussfully")
+        await AsyncStorage.setItem(
+          "accessToken",
+          userData.accessToken
+        );
+        Alert.alert("User logged in succussfully");
         dispatch(setUser(userData));
         dispatch(setUserStatus(Status.success));
       } else {
@@ -52,11 +61,42 @@ export function Login(data: ILoginData) {
     } catch (error: any) {
       console.log("Login error:", error);
 
-      Alert.alert("Login Error", error?.response?.data?.message || error.message || "Unexpected error occurred");
+      Alert.alert(
+        "Login Error",
+        error?.response?.data?.message ||
+          error.message ||
+          "Unexpected error occurred"
+      );
       dispatch(setUserStatus(Status.error));
+    } finally {
+      dispatch(setLoading(false));
     }
-    finally{
-      dispatch(setLoading(false))
+  };
+}
+//logout thunk
+export function Logout() {
+  return async function logoutThunk(dispatch: AppDispatch) {
+    try {
+      dispatch(setLoading(true));
+      const response = await API.post("users/logout");
+
+      const { statusCode, message, success } = response.data;
+
+      if (statusCode === 200 && success) {
+        await AsyncStorage.removeItem("accessToken");
+        dispatch(clearUser());
+        Alert.alert("Success", message);
+      } else {
+        Alert.alert("Logout Failed ...Try again");
+      }
+    } catch (error: any) {
+      console.log("Logout error:", error);
+      Alert.alert(
+        "Error",
+        error?.response?.data?.message || "Unexpected logout error"
+      );
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 }
@@ -99,7 +139,6 @@ export function Login(data: ILoginData) {
 //   };
 // }
 
-
-export const {setUser,setUserStatus} = authSlice.actions;
+export const { setUser, setUserStatus, clearUser } = authSlice.actions;
 
 export default authSlice.reducer;
