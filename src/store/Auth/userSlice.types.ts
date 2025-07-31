@@ -27,4 +27,5 @@ export interface IInstituteRegister {
   institutePhoneNumber: string;
   instituteAddress: string;
   institutePanNo: string;
+  instituteVatNo: string;
 }

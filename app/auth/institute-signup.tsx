@@ -11,7 +11,8 @@ const InstituteForm = () => {
     instituteEmail: '',
     institutePhoneNumber: '',
     instituteAddress: '',
-    institutePanNo: ''
+    institutePanNo: '',
+    instituteVatNo: '',
   });
 
   const [loading, setLoading] = React.useState(false);
@@ -21,9 +22,13 @@ const InstituteForm = () => {
   };
 
   const handleSubmit = () => {
-    if (!form.instituteName || !form.instituteEmail || !form.institutePhoneNumber || !form.instituteAddress || !form.institutePanNo) {
+    if (!form.instituteName || !form.instituteEmail || !form.institutePhoneNumber || !form.instituteAddress) {
       Alert.alert("Error", "Please fill in all fields.");
       return;
+    }
+    if(!form.institutePanNo && !form.instituteVatNo){
+        Alert.alert("Error", "Please provide at least PAN Number or VAT Number.");
+        return;
     }
     setLoading(true);
     // Handle form submission here
@@ -111,6 +116,15 @@ const InstituteForm = () => {
             style={{ fontSize: 14, height: 38 }}
             left={<TextInput.Icon icon="card-account-details" />}
           />
+               <TextInput
+            label="VAT Number"
+            value={form.instituteVatNo}
+            mode="outlined"
+            onChangeText={text => handleChange('instituteVatNo', text)}
+            className="my-2"
+            style={{ fontSize: 14, height: 38 }}
+            left={<TextInput.Icon icon="card-account-details" />}
+          /> 
 
           {/* Submit Button */}
           <Button

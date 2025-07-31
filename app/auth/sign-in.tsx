@@ -1,15 +1,16 @@
 import { Login } from "@/src/store/Auth/userSlice";
 import { ILoginData } from "@/src/store/Auth/userSlice.types";
-import { AppDispatch, RootState } from "@/src/store/store";
+import { useAppDispatch } from "@/src/store/hook";
+import { RootState } from "@/src/store/store";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native";
 import { Button, IconButton, TextInput } from "react-native-paper";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function SignIn() {
   const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const role = useSelector((state: RootState) => state.auth.user.role);
   const loading = useSelector((state: RootState) => state.ui.loading);
