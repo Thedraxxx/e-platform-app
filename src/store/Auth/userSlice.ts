@@ -6,7 +6,7 @@ import { Alert } from "react-native";
 import { Status } from "../golbalTypes/types";
 import { AppDispatch } from "../store";
 import { setLoading } from "../ui/uiSlice";
-import { IInitialState, ILoginData, IUserData } from "./userSlice.types";
+import { IInitialState, ILoginData, IRegisterData, IUserData } from "./userSlice.types";
 const initialState: IInitialState = {
   user: {
     email: "",
@@ -39,7 +39,7 @@ const authSlice = createSlice({
 export function Login(data: ILoginData) {
   return async function userLoginThunk(dispatch: AppDispatch) {
     try {
-      console.log("Triggering login with data:", data);
+      // console.log("Triggering login with data:", data);
       dispatch(setLoading(true));
       const response = await API.post("users/login", data);
       const { statusCode, data: userData, message, success } = response.data;
@@ -51,9 +51,10 @@ export function Login(data: ILoginData) {
           "accessToken",
           userData.accessToken
         );
-        Alert.alert("User logged in succussfully");
         dispatch(setUser(userData));
         dispatch(setUserStatus(Status.success));
+        Alert.alert("User logged in succussfully");
+        console.log("-----")
       } else {
         Alert.alert("Login Failed", message || "Something went wrong");
         dispatch(setUserStatus(Status.error));
@@ -100,6 +101,30 @@ export function Logout() {
     }
   };
 }
+export function Register(userData: IRegisterData){
+  return async function userRegisterThunk(dispatch: AppDispatch) {
+    try {
+      dispatch(setLoading(true));
+
+      const response = await API.post("users/register", userData);
+      const {statusCode, data, success, message } = response.data;
+      if (success && statusCode === 201) {
+        dispatch(setUser(data));
+        dispatch(setUserStatus(Status.success));
+        return data;
+      } else {
+        dispatch(setUserStatus(Status.error));
+        Alert.alert("Registration failed, Try again later.");
+      }
+    } catch (error: any) {
+      dispatch(setUserStatus(Status.error));
+      Alert.alert("Error", error?.response?.data?.message || "Something went wrong.");
+      throw error;
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+};
 
 // export function Login(data: ILoginData) {
 //   return async function userLoginThunk(dispatch: AppDispatch) {

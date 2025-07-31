@@ -24,7 +24,7 @@ export default function Navbar() {
 
         <TouchableOpacity
           className="px-3 py-1 rounded bg-gray-200"
-          onPress={() => router.push("/(institute)/institute-signup")}
+          onPress={() => router.push("/auth/institute-signup")}
         >
           <Text className="text-gray-700 text-sm">Become Institute</Text>
         </TouchableOpacity>

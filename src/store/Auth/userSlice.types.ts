@@ -16,3 +16,15 @@ export interface IInitialState{
     status: Status,
     isAuthenticated: boolean
 }
+export interface IRegisterData{
+username: string,
+email: string,
+password: string
+    }
+export interface IInstituteRegister {
+  instituteName: string;
+  instituteEmail: string;
+  institutePhoneNumber: string;
+  instituteAddress: string;
+  institutePanNo: string;
+}

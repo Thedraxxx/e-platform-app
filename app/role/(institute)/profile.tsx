@@ -9,13 +9,13 @@ export default function Profile() {
  const dispatch = useDispatch<AppDispatch>();
  const user = useSelector((state: RootState)=>state.auth.user)
  const isLoggedin = useSelector((state: RootState)=> state.auth.isAuthenticated)
- console.log("---------->",isLoggedin)
+//  console.log("---------->",isLoggedin)
   const handleLogout = () => {
         if(isLoggedin === true){
               dispatch(Logout());
               console.log("----> user",user)
               router.replace("/")
-               console.log("User logout vo hai")
+              //  console.log("User logout vo hai")
         }
   };
 
