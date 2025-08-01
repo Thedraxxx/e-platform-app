@@ -6,7 +6,12 @@ import { Alert } from "react-native";
 import { Status } from "../golbalTypes/types";
 import { AppDispatch } from "../store";
 import { setLoading } from "../ui/uiSlice";
-import { IInitialState, ILoginData, IRegisterData, IUserData } from "./userSlice.types";
+import {
+    IInitialState,
+    ILoginData,
+    IRegisterData,
+    IUserData,
+} from "./userSlice.types";
 const initialState: IInitialState = {
   user: {
     email: "",
@@ -47,14 +52,11 @@ export function Login(data: ILoginData) {
       // console.log("API Response:", response.data);
 
       if (statusCode === 200 && success) {
-        await AsyncStorage.setItem(
-          "accessToken",
-          userData.accessToken
-        );
+        await AsyncStorage.setItem("accessToken", userData.accessToken);
         dispatch(setUser(userData));
         dispatch(setUserStatus(Status.success));
         Alert.alert("User logged in succussfully");
-        console.log("-----")
+        console.log("-----");
       } else {
         Alert.alert("Login Failed", message || "Something went wrong");
         dispatch(setUserStatus(Status.error));
@@ -101,13 +103,13 @@ export function Logout() {
     }
   };
 }
-export function Register(userData: IRegisterData){
+export function Register(userData: IRegisterData) {
   return async function userRegisterThunk(dispatch: AppDispatch) {
     try {
       dispatch(setLoading(true));
 
       const response = await API.post("users/register", userData);
-      const {statusCode, data, success, message } = response.data;
+      const { statusCode, data, success, message } = response.data;
       if (success && statusCode === 201) {
         dispatch(setUser(data));
         dispatch(setUserStatus(Status.success));
@@ -118,13 +120,16 @@ export function Register(userData: IRegisterData){
       }
     } catch (error: any) {
       dispatch(setUserStatus(Status.error));
-      Alert.alert("Error", error?.response?.data?.message || "Something went wrong.");
+      Alert.alert(
+        "Error",
+        error?.response?.data?.message || "Something went wrong."
+      );
       throw error;
     } finally {
       dispatch(setLoading(false));
     }
   };
-};
+}
 
 // export function Login(data: ILoginData) {
 //   return async function userLoginThunk(dispatch: AppDispatch) {

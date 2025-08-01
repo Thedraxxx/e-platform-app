@@ -24,10 +24,10 @@ export default function SignIn() {
 
   useEffect(() => {
     if (role === "institute") {
-     
       router.replace("/role/(institute)");
     }else if(role === "student"){
       console.log("----")
+      console.log("user ko state storeage--",user)
        router.replace("/role/(student)/dashboard")
     }
   }, [user]);

@@ -1,12 +1,20 @@
-import { IInstituteRegister } from '@/src/store/Auth/userSlice.types';
+
+import { useAppDispatch, useAppSelector } from '@/src/store/hook';
+import { createInstitute } from '@/src/store/institute/institute';
+import { IInsttituteRegister } from '@/src/store/institute/institute-type';
+import { RootState } from '@/src/store/store';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { Button, IconButton, Text, TextInput } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 
 const InstituteForm = () => {
   const router = useRouter();
-  const [form, setForm] = React.useState<IInstituteRegister>({
+  const dispatch = useAppDispatch();
+  const role = useSelector((state: RootState)=>state.auth.user.role)
+  const user = useAppSelector((state)=>state.institute.user)
+  const [form, setForm] = React.useState<IInsttituteRegister>({
     instituteName: '',
     instituteEmail: '',
     institutePhoneNumber: '',
@@ -14,14 +22,16 @@ const InstituteForm = () => {
     institutePanNo: '',
     instituteVatNo: '',
   });
+   useEffect(()=>{
+       console.log("-->",user);
+   },[user])
+ 
 
-  const [loading, setLoading] = React.useState(false);
-
-  const handleChange = (key: keyof IInstituteRegister, value: string) => {
+  const handleChange = (key: keyof IInsttituteRegister, value: string) => {
     setForm(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     if (!form.instituteName || !form.instituteEmail || !form.institutePhoneNumber || !form.instituteAddress) {
       Alert.alert("Error", "Please fill in all fields.");
       return;
@@ -30,16 +40,10 @@ const InstituteForm = () => {
         Alert.alert("Error", "Please provide at least PAN Number or VAT Number.");
         return;
     }
-    setLoading(true);
-    // Handle form submission here
     console.log('Form submitted:', form);
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      Alert.alert("Success", "Institute created successfully!");
-    }, 1500);
-  };
-
+      dispatch(createInstitute(form));
+      router.replace("/");
+  }
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -130,8 +134,6 @@ const InstituteForm = () => {
           <Button
             mode="contained"
             onPress={handleSubmit}
-            loading={loading}
-            disabled={loading}
             style={{ paddingVertical: 6, borderRadius: 6, marginTop: 8 }}
             labelStyle={{ color: "#fff" }}
           >
