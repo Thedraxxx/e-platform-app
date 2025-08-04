@@ -44,11 +44,11 @@ export function createInstitute(data: IInsttituteRegister){
                      const response = await API.post("institute/createInstitute",data);
                      const { statusCode, data: userData, message } = response.data;
                      console.log("response ma ako --->",response.data)
-                      if(statusCode === 201){
-
+                      if(statusCode === 201 && response.data.success){
+                         
                          dispatch(setInstituteInfo(data));
                          dispatch(setInstituteStatus(Status.success));
-                        
+                         
                          Alert.alert("Institute ----> ", message);
                          console.log("user ko data ho inst ko: ",userData)
                       }else{
